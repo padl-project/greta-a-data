@@ -35,7 +35,7 @@ Make sure the file path on the code is updated to the correct folder.
 # url of folder where the data lives
 # Copy paste the url of the folder where the data lives
 
-folder_url <- " "
+folder_url <- "https://drive.google.com/drive/u/0/folders/1ExgCSp08yHrtwKXF9v6FE-VwAnGV07L5"
 
 # list of files inside the folder
 files <- drive_ls(as_id(folder_url))

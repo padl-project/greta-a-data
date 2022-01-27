@@ -1,0 +1,52 @@
+---
+title: "Exploring Greta Aeby's Data"
+author: "Camila Vargas"
+date: "1/27/2022"
+output: html_document
+---
+## Set up
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Load packages
+library(here)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(freeR)
+
+## Sets R not to use scientific notations
+options(scipen=999) 
+
+raw_data_path <- here::here("6.raw_data/")
+```
+
+## Exploring data
+```{r}
+
+excel_sheets(here::here("6.raw_data/Palmyra may 2011.xlsx"))
+
+```
+
+There are 18 sheets. Wee neet o ask Greta what do they contain and which oneas are relevant.
+
+## Creating a table with all sheet names
+
+```{r}
+# Vector
+sheet_name <- excel_sheets(here::here("6.raw_data/Palmyra may 2011.xlsx"))
+
+xx <- as_tibble(sheet_name) %>% 
+  rename(sheet_name = value) %>% 
+  mutate(relevant = " ",
+         description = " ")
+  
+
+```
+
+
+
+
+
+
