@@ -19,7 +19,6 @@ library(freeR)
 ## Sets R not to use scientific notations
 options(scipen=999) 
 
-raw_data_path <- here::here("6.raw_data/")
 ```
 
 ## Exploring data
@@ -29,7 +28,7 @@ excel_sheets(here::here("6.raw_data/Palmyra may 2011.xlsx"))
 
 ```
 
-There are 18 sheets. Wee neet o ask Greta what do they contain and which oneas are relevant.
+There are 18 sheets. We need o ask Greta what do they contain and which ones are relevant.
 
 ## Creating a table with all sheet names
 
