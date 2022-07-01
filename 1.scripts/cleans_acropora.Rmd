@@ -1,0 +1,29 @@
+---
+title: "Cleaning Acropora Syndrom Data"
+author: "Camila Vargas"
+date: "3/4/2022"
+output: html_document
+---
+
+
+## Set-up
+```{r setup, include=FALSE}
+
+## Load packages
+library(here)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(lubridate)
+library(freeR)
+
+## Sets R not to use scientific notations
+options(scipen=999) 
+
+```
+
+## Explore Data File
+```{r}
+excel_sheets(here::here("6.raw_data/Palmyra AWS study 2011-2014.xlsx"))
+```
+
