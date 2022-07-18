@@ -1,0 +1,98 @@
+---
+title: "Clean Raw Data"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+librarian::shelf("freeR", "glue", "googledrive", "here", "janitor", "lubridate", "readxl", "tidyverse")
+
+options(scipen=999)
+
+dir_gdrive <- "/Volumes/GoogleDrive/Shared drives/Palmyra_DataTransfer_EDI_Project"
+```
+
+## Read in the Data from Google Drive 
+
+To do this step, you need to have Google Drive installed on your computer so that you can access Google Drive files using Google File Stream 
+
+```{r}
+# Palmyra May 2011 Data 
+
+colonies <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "tagged colonies" ) %>% clean_names()
+
+colony_location <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "tag colony location" ) %>% clean_names()
+
+crazy_coral_sites <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "crazycoral disease surveys site" ) %>% clean_names()
+
+transmission_samples <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "transmission samples" ) %>% clean_names()
+
+substrate_surveys <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "corallimorph substrate surveys" ) %>% clean_names() %>% 
+  pivot_longer(cols = 2:33, 
+               names_to = "survey_metric", 
+               values_to = "value")
+
+sites <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "sites" ) %>% clean_names()
+
+tagged_colony_gps <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "tagged colony GPS" ) %>% clean_names()
+
+fish_data <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "fish data" ) %>% clean_names()
+
+corallimorph_patch_survey <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "corallimorph patch surveys" ) %>% clean_names()
+
+treated_colonies <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "treated colonies" ) %>% clean_names()
+
+acrop_colony_counts <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "acrop colony cnts" ) %>% clean_names()
+
+crazy_coral_dis <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "crazy coral dis 25x2" ) %>% clean_names()
+
+substrate_summary <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "crzy corals substrate summary" ) %>% clean_names()
+
+
+
+```
+
+
+## Explore the Data 
+
+```{r}
+
+
+
+```
+
+
+### Highlight Changes Required 
+
+You can add a bullet point list here 
+
+
+
+
+## Clean the Data 
+
+```{r}
+
+
+
+```
+
+## Save the Clean Data 
+
+Use this code chunk to upload the cleaned data directly to google drive. You write the file directly to the drive as if you were saving it to a local file 
+
+```{r}
+# You can use write_csv or any other function like that to write directly to the drive. 
+
+# Example below: 
+# write_csv(chlorurus_activity, glue("{dir_gdrive}/DATA_RAW/Peter 
+# Carlson/Chlorurus_Activity_Palmyra_2014-test.csv"))
+
+
+
+```
+
+
+
