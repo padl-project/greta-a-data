@@ -18,6 +18,7 @@ dir_gdrive <- "/Volumes/GoogleDrive/Shared drives/Palmyra_DataTransfer_EDI_Proje
 
 To do this step, you need to have Google Drive installed on your computer so that you can access Google Drive files using Google File Stream 
 
+### Colonies Data
 ```{r}
 # Palmyra May 2011 Data 
 
@@ -27,18 +28,65 @@ colony_location <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may
 
 crazy_coral_sites <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "crazycoral disease surveys site" ) %>% clean_names()
 
-transmission_samples <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "transmission samples" ) %>% clean_names()
-
-substrate_surveys <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "corallimorph substrate surveys" ) %>% clean_names() %>% 
-  pivot_longer(cols = 2:33, 
-               names_to = "survey_metric", 
-               values_to = "value")
-
 sites <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "sites" ) %>% clean_names()
 
 tagged_colony_gps <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "tagged colony GPS" ) %>% clean_names()
 
-fish_data <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "fish data" ) %>% clean_names()
+```
+
+#### Explore Colonies and Sites Data 
+
+```{r}
+str(colonies)
+sort(unique(colonies$date_tagged))
+sort(unique(colonies$sampled_for_histo))
+sort(unique(colonies$neighboring_colony_affected_on_6_3_11))
+
+str(sites)
+sort(unique(sites$date))
+sort(unique(sites$gps))
+
+str(tagged_colony_gps)
+sort(unique(tagged_colony_gps$long))
+
+
+```
+
+- Colonies 
+  - `sampled_for_histo` is not reading in as Date, needs to be fixed 
+  - Make `sampled_for_transmission` a Date 
+
+- Colony Location looks good! 
+- Crazy Coral Sites looks good! 
+
+- Sites 
+  - Split `GPS` into a lat and long coordinate column 
+  
+- Tagged Location GPS looks good! 
+
+
+#### Clean the Data 
+
+```{r}
+colonies_clean <- colonies %>% 
+  mutate(sampled_for_histo = case_when(
+    sampled_for_histo == "40683.0" ~ "2011-05-20", 
+    sampled_for_histo == "y" ~ "y"
+  ))
+
+sites_clean <- sites %>% 
+  separate(gps, into = c("lat", "lon"), sep = "  ")
+
+```
+
+
+
+
+```{r}
+
+transmission_samples <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "transmission samples" ) %>% clean_names()
+
+substrate_surveys <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "corallimorph substrate surveys" ) %>% clean_names() 
 
 corallimorph_patch_survey <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "corallimorph patch surveys" ) %>% clean_names()
 
@@ -50,32 +98,67 @@ crazy_coral_dis <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may
 
 substrate_summary <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "crzy corals substrate summary" ) %>% clean_names()
 
-
-
+fish_data <- read_excel(glue("{dir_gdrive}/DATA_RAW/Greta Aeby/Palmyra may 2011.xlsx"), sheet = "fish data" ) %>% clean_names()
 ```
 
 
 ## Explore the Data 
 
 ```{r}
+str(transmission_samples)
+sort(unique(transmission_samples$date_collected))
+sort(unique(transmission_samples$date_terminated))
+sort(unique(transmission_samples$result))
 
+str(substrate_surveys)
 
+str(corallimorph_patch_survey)
+sort(unique(corallimorph_patch_survey$number_corallimorph_patches))
+
+str(treated_colonies)
+sort(unique(treated_colonies$date_treated))
+sort(unique(treated_colonies$treatment_type))
+sort(unique(treated_colonies$notes))
+
+str(acrop_colony_counts)
+sort(unique(acrop_colony_counts$totals))
+
+str(crazy_coral_dis)
+sort(unique(crazy_coral_dis$description))
+
+str(substrate_summary)
+
+str(fish_data)
 
 ```
 
+#### Changes
 
-### Highlight Changes Required 
+- Substrate Surveys
+  - Should we make this long??
+  
+- Corallimorph Patch survey looks good!
 
-You can add a bullet point list here 
+- Treated Colonies 
+  - Standardize the branch trim + zspar 
+  - remove result 
 
-
+- Acrop Colony Counts looks good! 
+- Crazy Coral Dis looks good! 
+- Substrate Summary Looks good! 
+- Fish data looks good! 
+  - Should it be long?
 
 
 ## Clean the Data 
 
 ```{r}
 
+treated_colonies_clean <- treated_colonies %>% 
+  select(-result)
+treated_colonies_clean$treatment_type <- str_replace_all(treated_colonies$treatment_type, "branchlet trim and zspar", "zspar + branch trim")
 
+sort(unique(treated_colonies_clean$treatment_type))
 
 ```
 
